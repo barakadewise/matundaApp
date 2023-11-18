@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:matunda/components/custom_snackbar.dart';
-import 'package:matunda/components/password_input.dart';
 import 'package:matunda/components/submit_button.dart';
 import 'package:matunda/components/username_input.dart';
 import 'package:matunda/graphqlservices/client.dart';
 import 'package:matunda/screens/complete_profile.dart';
+import 'package:matunda/screens/dashboard_screen.dart';
 import 'package:matunda/screens/login_page.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -25,6 +25,8 @@ class _CreateAccountState extends State<CreateAccount> {
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
+  bool obscureText = true;
+  
   //user registration function
   Future<void> _userRegistrationFunction(context) async {
     final ValueNotifier<GraphQLClient> client =
@@ -75,11 +77,10 @@ class _CreateAccountState extends State<CreateAccount> {
                   animType: AnimType.topSlide,
                   dialogType: DialogType.error,
                   showCloseIcon: true,
-                  btnCancelOnPress: (){},
-                  btnOkOnPress: (){},
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {},
                   desc: result.exception?.graphqlErrors[0].message)
               .show();
-              
         } else {
           final String createdEmail = result.data?['createUser']['email'] ?? '';
           CustomSnackbar(
@@ -113,13 +114,12 @@ class _CreateAccountState extends State<CreateAccount> {
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
-           
             child: Column(
               children: [
                 const SizedBox(
                   height: 30,
                 ),
-                SvgPicture.asset('assets/svg/register.svg',
+                SvgPicture.asset('assets/svg/signup_svg.svg',
                     height: 210, width: size.width),
                 const Padding(
                   padding:
@@ -139,20 +139,107 @@ class _CreateAccountState extends State<CreateAccount> {
                       emailController: widget.emailText,
                       labelText: 'Enter email'),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: PasswordField(
-                      isComfirmingController: false,
-                      passwordController: widget.passwordText,
-                      labelText: 'Create strong password'),
+                  child: SizedBox(
+                    height: 70,
+                    child: TextFormField(
+                      controller: widget.passwordText,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        fillColor: const Color.fromARGB(255, 35, 94, 37),
+                        labelText: "Create password",
+                        floatingLabelStyle:
+                            const TextStyle(color: Colors.green),
+                        prefixIcon: Icon(Icons.lock,
+                            color: const Color.fromARGB(255, 35, 94, 37)
+                                .withOpacity(0.5)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.green),
+                            borderRadius: BorderRadius.circular(10)),
+                        suffixIcon: IconButton(
+                            icon: obscureText
+                                ? const Icon(
+                                    Icons.visibility,
+                                    color: Color.fromARGB(255, 35, 94, 37),
+                                  )
+                                : const Icon(
+                                    Icons.visibility_off,
+                                    color: Color.fromARGB(255, 35, 94, 37),
+                                  ),
+                            onPressed: () {
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            }),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Plese enter passsword";
+                        } else if (value.length < 6) {
+                          return 'Password must have at leats 6 characters';
+                        }
+                        return null;
+                        
+                      },
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: PasswordField(
-                      isComfirmingController: true,
-                      passwordController: widget.confirmPasswordtext,
-                      labelText: 'Confirm your password'),
+                  child: SizedBox(
+                    height: 75,
+                    child: TextFormField(
+                      controller: widget.confirmPasswordtext,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        fillColor: const Color.fromARGB(255, 35, 94, 37),
+                        labelText: "Comfirm Password",
+                        floatingLabelStyle:
+                            const TextStyle(color: Colors.green),
+                        prefixIcon: Icon(Icons.lock,
+                            color: const Color.fromARGB(255, 35, 94, 37)
+                                .withOpacity(0.5)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.green),
+                            borderRadius: BorderRadius.circular(10)),
+                        suffixIcon: IconButton(
+                            icon: obscureText
+                                ? const Icon(
+                                    Icons.visibility,
+                                    color: Color.fromARGB(255, 35, 94, 37),
+                                  )
+                                : const Icon(
+                                    Icons.visibility_off,
+                                    color: Color.fromARGB(255, 35, 94, 37),
+                                  ),
+                            onPressed: () {
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            }),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Plese enter passsword";
+                        } else if (value != widget.passwordText.text) {
+                          return "Passwords dont match";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 4, bottom: 15, left: 20, right: 20),
@@ -167,10 +254,10 @@ class _CreateAccountState extends State<CreateAccount> {
                       InkWell(
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>LoginPanel()));
+                          // Navigator.pushReplacement(context,
+                          //     MaterialPageRoute(builder: (_) => LoginPanel()));
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (_) =>CompleteProfile(createdUserEmail: 'createdUserEmail')));
                         },
                         child: const Text('Login',
                             style: TextStyle(

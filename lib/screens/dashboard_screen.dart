@@ -3,18 +3,21 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:matunda/components/custom_dashboard_appbar.dart';
 import 'package:matunda/components/fruits_cards.dart';
 import 'package:matunda/components/store_card.dart';
+import 'package:matunda/graphqlservices/client.dart';
 import 'package:matunda/models/fruits_card_items_model.dart';
 import 'package:matunda/models/store_items_model.dart';
 import 'package:matunda/screens/fruits_details.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final String? userToken;
+  const Dashboard({super.key,this.userToken});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+    final Client graPhqlClient = Client();
   final List<String> categoryList = ['Bestseller', 'Seasonal', 'Promotion'];
   final Map<String, Color> fruitcardColors = {
     'orange': Colors.orangeAccent.shade100,
@@ -30,6 +33,21 @@ class _DashboardState extends State<Dashboard> {
   int selectedCategory = 0;
   int isSelecttredIcon = 0;
   bool isActiveIcon = true;
+
+  //String query 
+
+ String runQuery =r''' query fetchUsername($email:String!){
+  user(email:$email){
+    name
+   
+  }
+}
+''';
+
+  Future<void> _getUsername() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -92,7 +110,7 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                child: Container(
+                child: SizedBox(
                     height: 45,
                     child: Center(
                       child: ListView.builder(
@@ -104,7 +122,7 @@ class _DashboardState extends State<Dashboard> {
                           }),
                     )),
               ),
-              Container(
+              SizedBox(
                 height: 300,
                 width: size.width,
                 child: Center(
@@ -132,7 +150,7 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 height: 90,
                 width: size.width,
                 child: Center(

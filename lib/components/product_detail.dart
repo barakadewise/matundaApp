@@ -14,7 +14,7 @@ class _ProductDetailsAppbarState extends State<ProductDetailsAppbar> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       height: size.height * 0.4,
       child: SafeArea(
         child: Stack(children: [

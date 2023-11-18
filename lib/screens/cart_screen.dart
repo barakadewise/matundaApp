@@ -20,7 +20,7 @@ class _MycartPanelState extends State<MycartPanel> {
           child: Column(
             children: [
               const CartAppBar(),
-              Container(
+              SizedBox(
                   height: size.height * 0.55,
                   child: ListView.builder(
                       itemCount: fruitCardItems.length,

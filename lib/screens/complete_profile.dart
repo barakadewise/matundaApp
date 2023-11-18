@@ -102,97 +102,106 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
     return Scaffold(
         body: SafeArea(
-            child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          height: 30,
-        ),
-        const Text(
-          'Complete your profile',
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-          child: Form(
-              key: _formKey,
+            child: SingleChildScrollView(
               child: Column(
-                children: [
-                  TextFormField(
-                    controller: widget.nameText,
-                    decoration: InputDecoration(
-                      labelText: "Enter you name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.green)),
-                      floatingLabelStyle: const TextStyle(color: Colors.green),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.green),
-                          borderRadius: BorderRadius.circular(10)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.green),
-                          borderRadius: BorderRadius.circular(10)),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                    const SizedBox(
+                      height: 30,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your name";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: DropdownButtonFormField<String>(
-                      value: regionText,
-                      decoration: const InputDecoration(
-                          hintText: "select address location"),
-                      dropdownColor: Colors.green[50],
-                      items: selectedRegion
-                          .map((value) => DropdownMenuItem<String>(
-                              value: value, child: Text(value)))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          regionText = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please select location address";
-                        }
-                        return null;
-                      },
+                    Image.asset('assets/images/prodetails.png',width: size.width,height: 220,),
+                    SizedBox(height: 20,),
+                    const Text(
+                      'Complete your profile',
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: size.width,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () async {
-                          await _completeUserProfile(context);
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
+                      child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 7),
+                      child: TextFormField(
+                        controller: widget.nameText,
+                        decoration: InputDecoration(
+                          labelText: "Enter you name",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.green)),
+                          floatingLabelStyle: const TextStyle(color: Colors.green),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.green),
+                              borderRadius: BorderRadius.circular(10)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.green),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your name";
+                          }
+                          return null;
                         },
-                        child: const Text('Submit')),
-                  ),
-                  if (errorTextmsg != null) Text(errorTextmsg!),
-                ],
-              )),
-        )
-      ],
-    )));
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 7),
+                      child: DropdownButtonFormField<String>(
+                        value: regionText,
+                        decoration:  InputDecoration(
+                            hintText: "select address location",border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green),borderRadius: BorderRadius.circular(10),
+                            ),focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.green))),
+                        dropdownColor: Colors.green[50],
+                        items: selectedRegion
+                            .map((value) => DropdownMenuItem<String>(
+                                value: value, child: Text(value)))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            regionText = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please select location address";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: size.width,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: const Color.fromARGB(255, 35, 94, 37),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () async {
+                            await _completeUserProfile(context);
+                          },
+                          child: const Text('Submit')),
+                    ),
+                    if (errorTextmsg != null) Text(errorTextmsg!),
+                  ],
+                )),
+                    )
+              ],
+                      ),
+            )));
   }
 
   @override

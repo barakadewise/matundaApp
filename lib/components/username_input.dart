@@ -45,7 +45,7 @@ class _EmailFieldState extends State<EmailField> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter your email!';
-          } else if (RegExp(emailRegex)
+          } else if (!RegExp(emailRegex)
               .hasMatch(widget.emailController.text)) {
             return 'Please enter valid email';
           }
